@@ -6,11 +6,13 @@ class GetMinuteQuarterTest extends TestCase
 {
     protected $validator;
     protected $basics;
+    protected $mapper;
 
     protected function setUp(): void
     {
         $this->validator = new basics\BasicsValidator();
-        $this->basics = new basics\Basics($this->validator);
+        $this->mapper = new basics\Mappers\MinuteQuarterMapper();
+        $this->basics = new basics\Basics($this->validator, $this->mapper);
     }
 
     /**
