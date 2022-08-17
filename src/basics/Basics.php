@@ -2,7 +2,7 @@
 
 namespace basics;
 
-use basics\BasicsValidatoruse;
+use basics\BasicsValidator;
 use \InvalidArgumentException;
 
 class Basics implements BasicsInterface
@@ -31,83 +31,33 @@ class Basics implements BasicsInterface
     {
         $this->basicValidator->isMinutesException($minute);
 
-        $parts = 4;
-        $wholeNumber = 60;
-        $partWidth = $wholeNumber / $parts;
+        $pattern = array(1, 15, 16, 30, 31, 45, 46, 59);
 
-        if ($parts = 2) {
-            $result = $this->getBySimpleSearch($minute, $partWidth, $wholeNumber);
-        }
-
-        $divisions = [];
-        $currentPart = 1;
-        while ($currentPart !== $parts) {
-            $divisions[] = $partWidth * $currentPart;
-            $currentPart++;
-        }
-
-
-        if ($minute > 0 && $minute <= $partWidth) {
-            return 'first';
-        } elseif ($minute === 0 || $minute <= $wholeNumber ) {
+        if ($minute === 0) {
             return 'fourth';
         }
+        $result = $this->reduce($minute, $pattern);
 
-        elseif ($minute === 0 || $minute <= $partWidth * $parts) {
-            return 'fourth';
-        } elseif ($minute === 0 || $minute <= $partWidth * $parts) {
-            return 'fourth';
+        $this->writeToFile(strval($result));
+
+        return $result;
+    }
+
+    private function reduce($search, array $pattern): int
+    {
+        $cnt = count($pattern);
+        for ($i = 0; $i < $cnt; $i++) {
+            if (!isset($pattern[$i + 1]) || $search >= $pattern[$i] && $search < $pattern[$i + 1] ) {
+                return $i;
+            }
         }
     }
 
-    public function binarySearch(Array $arr, $x)
+    private function writeToFile(string $string)
     {
-        // check for empty array
-        if (count($arr) === 0) return false;
-        $low = 0;
-        $high = count($arr) - 1;
-
-        while ($low <= $high) {
-
-            // compute middle index
-            $mid = floor(($low + $high) / 2);
-
-            // element found at mid
-            if($arr[$mid] == $x) {
-                return true;
-            }
-
-            if ($x < $arr[$mid]) {
-                // search the left side of the array
-                $high = $mid -1;
-            }
-            else {
-                // search the right side of the array
-                $low = $mid + 1;
-            }
-        }
-
-        // If we reach here element x doesnt exist
-        return false;
-    }
-
-    /**
-     * @todo connect API for getting names of countable numbers
-     *
-     * @return void
-     */
-    public function getPartName()
-    {
-
-    }
-
-    private function getBySimpleSearch($minute, $partWidth, $wholeNumber)
-    {
-        if ($minute > 0 && $minute <= $partWidth) {
-            return 'first';
-        } elseif ($minute === 0 || $minute <= $wholeNumber) {
-            return 'fourth';
-        }
+        $myfile = fopen("output.txt", "w") or die("Unable to open file!");
+        fwrite($myfile, $string . '\n');
+        fclose($myfile);
     }
 
     /**
@@ -123,7 +73,10 @@ class Basics implements BasicsInterface
      * @return boolean
      * @throws \InvalidArgumentException
      */
-    public function isLeapYear(int $year): bool;
+    public function isLeapYear(int $year): bool
+    {
+        return true;
+    }
 
     /**
      * The $input variable contains a string of six digits (like '123456' or '385934').
@@ -138,5 +91,8 @@ class Basics implements BasicsInterface
      * @return boolean
      * @throws \InvalidArgumentException
      */
-    public function isSumEqual(string $input): bool;
+    public function isSumEqual(string $input): bool
+    {
+        return false;
+    }
 }

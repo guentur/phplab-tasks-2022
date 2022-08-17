@@ -15,8 +15,8 @@ class BasicsValidator implements BasicsValidatorInterface
      */
     public function isMinutesException(int $minute): void
     {
-        if ($minute < 0 || $minute > 60) {
-            throw InvalidArgumentException;
+        if ($minute < 0 || $minute > 59) {
+            throw new InvalidArgumentException('Argument $minute must be beth 0 and 59 including these integers');
         }
     }
 
@@ -27,7 +27,10 @@ class BasicsValidator implements BasicsValidatorInterface
      * @param int $year
      * @throws \InvalidArgumentException
      */
-    public function isYearException(int $year): void;
+    public function isYearException(int $year): void
+    {
+
+    }
 
     /**
      * Implement the check functionality described in the method getMinuteQuarter (BasicsInterface Class) which throws Exception.
@@ -36,5 +39,8 @@ class BasicsValidator implements BasicsValidatorInterface
      * @param string $input
      * @throws \InvalidArgumentException
      */
-    public function isValidStringException(string $input): void;
+    public function isValidStringException(string $input): void
+    {
+
+    }
 }
