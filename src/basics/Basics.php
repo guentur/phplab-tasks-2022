@@ -4,14 +4,20 @@ namespace basics;
 
 use basics\BasicsValidator;
 use \InvalidArgumentException;
+use basics\Mappers\MinuteQuarterMapper;
 
 class Basics implements BasicsInterface
 {
+    private $mapper;
+
     private $basicValidator;
 
-    public function __construct(BasicsValidatorInterface $basicValidator = null)
-    {
+    public function __construct(
+        BasicsValidatorInterface $basicValidator = null,
+        MinuteQuarterMapper $mapper = null
+    ) {
         $this->basicValidator = $basicValidator ?? new BasicsValidator();
+        $this->mapper = $mapper ?? new MinuteQuarterMapper();
     }
 
     /**
@@ -40,7 +46,7 @@ class Basics implements BasicsInterface
 
         $this->writeToFile(strval($result));
 
-        return $result;
+        return $this->mapper->getMapByKey($result);
     }
 
     private function reduce($search, array $pattern): int
