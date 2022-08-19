@@ -2,9 +2,10 @@
 
 namespace basics\Mappers;
 
-use \InvalidArgumentException;
+use InvalidArgumentException;
+use basics\Mappers\Skeleton\MapperInterface;
 
-class MinuteQuarterMapper
+class MinuteQuarterMapper implements MapperInterface
 {
     /**
      * @var array
