@@ -6,6 +6,9 @@ use \InvalidArgumentException;
 
 class MinuteQuarterMapper
 {
+    /**
+     * @var array
+     */
     private array $map = [];
 
     public function __construct()
@@ -13,43 +16,67 @@ class MinuteQuarterMapper
         $this->createMap($this->getDefaultMap());
     }
 
-    public function addMapPoint($mapKey, $mapPoint): void
+    /**
+     * @param $pointKey
+     * @param $mapPoint
+     * @return void
+     */
+    public function addMapPoint($pointKey, $mapPoint): void
     {
-        if (array_key_exists($mapKey, $this->map)) {
-            throw new InvalidArgumentException('In order to change a map in mapper use the function `updateMapPoint(int $mapKey, string $mapPoint): void`');
+        if (array_key_exists($pointKey, $this->map)) {
+            throw new InvalidArgumentException('In order to change a map in mapper use the function `updateMapPoint(int $pointKey, string $mapPoint): void`');
         }
-        $this->map[$mapKey] = $mapPoint;
+        $this->map[$pointKey] = $mapPoint;
     }
 
+    /**
+     * @return array
+     */
     public function getMap(): array
     {
         return $this->map;
     }
 
-    public function updateMapPoint(int $mapKey, string $mapPoint): void
+    /**
+     * @param int $pointKey
+     * @param string $mapPoint
+     * @return void
+     */
+    public function updateMapPoint(int $pointKey, string $mapPoint): void
     {
-        if (!array_key_exists($mapKey, $this->map)) {
-            throw new InvalidArgumentException('In order to create a new map in mapper use the function `addMapPoint(int $mapKey, string $mapPoint): void`');
+        if (!array_key_exists($pointKey, $this->map)) {
+            throw new InvalidArgumentException('In order to create a new map in mapper use the function `addMapPoint(int $pointKey, string $mapPoint): void`');
         }
-        $this->map[$mapKey] = $mapPoint;
+        $this->map[$pointKey] = $mapPoint;
     }
 
-    public function removeMapPoint($mapKey): void
+    /**
+     * @param $pointKey
+     * @return void
+     */
+    public function removeMapPoint($pointKey): void
     {
-        if (!array_key_exists($mapKey, $this->map)) {
+        if (!array_key_exists($pointKey, $this->map)) {
             throw new InvalidArgumentException('Passed key is not found');
         }
-        unset($this->map[$mapKey]);
+        unset($this->map[$pointKey]);
     }
 
-    public function getMapByKey($mapKey): string
+    /**
+     * @param $pointKey
+     * @return string
+     */
+    public function getPointByKey($pointKey): string
     {
-        if (!array_key_exists($mapKey, $this->map)) {
+        if (!array_key_exists($pointKey, $this->map)) {
             throw new InvalidArgumentException('Passed key is not found');
         }
-        return $this->map[$mapKey];
+        return $this->map[$pointKey];
     }
 
+    /**
+     * @return string[]
+     */
     public function getDefaultMap(): array
     {
         // @todo create configuration for mappers like di.xml in Magento. It will help to remove `private function createMap()`
@@ -64,10 +91,14 @@ class MinuteQuarterMapper
         ];
     }
 
+    /**
+     * @param $map
+     * @return void
+     */
     private function createMap($map)
     {
-        foreach ($map as $mapKey => $mapPoint) {
-            $this->addMapPoint($mapKey, $mapPoint);
+        foreach ($map as $pointKey => $mapPoint) {
+            $this->addMapPoint($pointKey, $mapPoint);
         }
     }
 }
