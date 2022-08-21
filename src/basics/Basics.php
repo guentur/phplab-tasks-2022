@@ -5,18 +5,23 @@ namespace basics;
 use basics\BasicsValidator;
 use \InvalidArgumentException;
 use basics\Mappers\MinuteQuarterMapper;
+use basics\Model\GetArrayPart;
 
 class Basics implements BasicsInterface
 {
     private $mapper;
 
+    private $getArrayPart;
+
     private $basicValidator;
 
     public function __construct(
         BasicsValidatorInterface $basicValidator = null,
+        GetArrayPart $getArrayPart = null,
         MinuteQuarterMapper $mapper = null
     ) {
         $this->basicValidator = $basicValidator ?? new BasicsValidator();
+        $this->getArrayPart = $getArrayPart ?? new GetArrayPart();
         $this->mapper = $mapper ?? new MinuteQuarterMapper();
     }
 
@@ -37,33 +42,12 @@ class Basics implements BasicsInterface
     {
         $this->basicValidator->isMinutesException($minute);
 
-        $pattern = array(1, 15, 16, 30, 31, 45, 46, 59);
-
         if ($minute === 0) {
             return 'fourth';
         }
-        $result = $this->reduce($minute, $pattern);
 
-        $this->writeToFile(strval($result));
-
-        return $this->mapper->getMapByKey($result);
-    }
-
-    private function reduce($search, array $pattern): int
-    {
-        $cnt = count($pattern);
-        for ($i = 0; $i < $cnt; $i++) {
-            if (!isset($pattern[$i + 1]) || $search >= $pattern[$i] && $search < $pattern[$i + 1] ) {
-                return $i;
-            }
-        }
-    }
-
-    private function writeToFile(string $string)
-    {
-        $myfile = fopen("output.txt", "w") or die("Unable to open file!");
-        fwrite($myfile, $string . '\n');
-        fclose($myfile);
+        $pattern = array(1, 15, 16, 30, 31, 45, 46, 59);
+        return $this->getArrayPart->execute($minute, $pattern, $this->mapper);
     }
 
     /**
