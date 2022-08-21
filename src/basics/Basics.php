@@ -67,7 +67,11 @@ class Basics implements BasicsInterface
     {
         $this->basicValidator->isYearException($year);
 
-        return true;
+        if ((0 === $year % 4) && (0 !== $year % 100) || (0 === $year % 400)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
