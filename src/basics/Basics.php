@@ -6,6 +6,7 @@ use basics\BasicsValidator;
 use \InvalidArgumentException;
 use basics\Mappers\MinuteQuarterMapper;
 use basics\Model\GetArrayPart;
+use phpDocumentor\Reflection\Types\ArrayKey;
 
 class Basics implements BasicsInterface
 {
@@ -89,6 +90,31 @@ class Basics implements BasicsInterface
      */
     public function isSumEqual(string $input): bool
     {
+        $this->basicValidator->isValidStringException($input);
+
+        $firstLine = substr($input, 0, 3);
+        $secondLine = substr($input, -3);
+
+        $firstLineSum = $this->getNumSum($firstLine);
+        $secondLineSum = $this->getNumSum($secondLine);
+
+        if ($firstLineSum == $secondLineSum) {
+            return true;
+        }
+
         return false;
+    }
+
+    /**
+     * @param string $num
+     * @return int
+     */
+    public function getNumSum(string $num): int
+    {
+        $sum = 0;
+        for ($i = 0; $i < strlen($num); $i++) {
+            $sum += (int) $num[$i];
+        }
+        return $sum;
     }
 }

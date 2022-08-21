@@ -43,6 +43,8 @@ class BasicsValidator implements BasicsValidatorInterface
      */
     public function isValidStringException(string $input): void
     {
-
+        if (strlen($input) <> 6) {
+            throw new InvalidArgumentException('Argument $input must contain 6 digits');
+        }
     }
 }
