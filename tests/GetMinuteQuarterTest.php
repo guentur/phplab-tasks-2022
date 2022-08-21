@@ -2,15 +2,23 @@
 
 use PHPUnit\Framework\TestCase;
 
+use basics\BasicsValidator;
+use basics\Model\GetArrayPart;
+use basics\Mappers\MinuteQuarterMapper;
+
 class GetMinuteQuarterTest extends TestCase
 {
     protected $validator;
     protected $basics;
+    protected $mapper;
+    protected $getArrayPart;
 
     protected function setUp(): void
     {
-        $this->validator = new basics\BasicsValidator();
-        $this->basics = new basics\Basics($this->validator);
+        $this->validator = new BasicsValidator();
+        $this->getArrayPart = new GetArrayPart();
+        $this->mapper = new MinuteQuarterMapper();
+        $this->basics = new basics\Basics($this->validator, $this->getArrayPart, $this->mapper);
     }
 
     /**
