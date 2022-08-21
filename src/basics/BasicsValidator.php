@@ -29,7 +29,9 @@ class BasicsValidator implements BasicsValidatorInterface
      */
     public function isYearException(int $year): void
     {
-
+        if ($year < 1900) {
+            throw new InvalidArgumentException('Argument $year must be higher than 1900 year');
+        }
     }
 
     /**
